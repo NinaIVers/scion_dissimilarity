@@ -3,8 +3,8 @@
 """
 
 # Commented out IPython magic to ensure Python compatibility.
-pip install streamlit
-pip install plotly
+!pip install streamlit
+!pip install plotly
 
 import streamlit as st
 import pandas as pd
