@@ -3,8 +3,8 @@
 """
 
 # Commented out IPython magic to ensure Python compatibility.
-# %pip install streamlit
-# %pip install plotly
+%pip install streamlit
+%pip install plotly
 
 import streamlit as st
 import pandas as pd
@@ -14,23 +14,25 @@ import plotly.express as px
 df = pd.read_csv('variety_explorer/df_scion_normalized.csv',
                  encoding= "ISO-8859-1", delimiter=";")
 
+# Page configuration
+st.set_page_config(layout = "wide")
+
+
 st.title("Grapevine Scion Variety Explorer 🍇🔍")
 
-st.markdown("""
-This interactive tool allows you to explore genetic dissimilarity among grapevine scion Varietys.
-You can filter Varietys, view clustering results, and examine key descriptors.
-""")
+st.markdown(""" This interactive tool allows you to explore genetic dissimilarity among grapevine scion varieties.
+Use the filters on the sidebar to select specific cultivars or clustering groups.""")
 
-df.info()
 
 # Sidebar filters
-st.sidebar.header("Filter Options")
-selected_varieties = st.sidebar.multiselect("Select cultivars:",
+st.sidebar.header("🔎 Filter Options")
+selected_varieties = st.sidebar.multiselect("Select varieties:",
                                             df['Prime name'].unique())
-selected_kmeans_group = st.sidebar.selectbox("Select K-means group:",
+selected_kmeans_group = st.sidebar.selectbox("Select K-means heterotic group:",
                                              ['All'] + sorted(df['Kmeans cluster'].unique()))
-selected_ward_group = st.sidebar.selectbox("Select Ward group:",
+selected_ward_group = st.sidebar.selectbox("Select Ward heterotic group:",
                                            ['All'] + sorted(df['Ward cluster'].unique()))
+
 
 # Apply filters
 filtered_df = df.copy()
@@ -48,8 +50,14 @@ if selected_ward_group != 'All':
 st.subheader("Filtered Cultivar Data")
 st.dataframe(filtered_df)
 
+# Plots
+
+# Heatmap
+
+
+
 # Footer
 st.markdown("""
 ---
-**Note:** This tool is part of a research project on genetic dissimilarity of grapevine scion Varietys using unsupervised machine learning.
+**Note:** This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning. 
 """)
