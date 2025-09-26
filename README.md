@@ -17,7 +17,7 @@ The dataset includes:
 
 ## ▶️ How to Run the app
 This app is hosted on Streamlit Cloud and can be accessed via the following link:
-🔗 (Launch the App)[]
+🔗 [Launch the App](https://grapevine-scion-explorer.streamlit.app/)
 
 ## 📦 Requirements
 - Python 3.8+
