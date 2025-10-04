@@ -37,7 +37,7 @@ selected_ward_group = st.sidebar.selectbox("Select Ward heterotic group:",
                                            ['All'] + sorted(df['Ward cluster'].unique()))
 
 
-# Apply filters
+# Filters
 filtered_df = df.copy()
 
 if selected_varieties:
@@ -54,6 +54,12 @@ st.subheader("Filtered Cultivar Data")
 st.dataframe(filtered_df)
 
 # Plots
+
+st.header("Test score vs. perceived ability")
+    st.altair_chart(
+        create_point_chart(data, x="Kmeans cluster", y="Prime name"),
+        theme=None,
+    )
 
 # Heatmap
 
