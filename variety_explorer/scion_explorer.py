@@ -55,8 +55,7 @@ st.subheader("Filtered Cultivar Data")
 st.dataframe(filtered_df)
 
 # Plots
-st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"))
-
+# Define a função primeiro
 def create_point_chart(data, x, y):
     chart = alt.Chart(data).mark_circle(size=100).encode(
         x=alt.X(x, title=x),
@@ -69,6 +68,8 @@ def create_point_chart(data, x, y):
     ).interactive()
     return chart
 
+# Depois chame a função
+st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"))
 # Heatmap
 
 
