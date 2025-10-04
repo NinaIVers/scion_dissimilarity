@@ -6,6 +6,7 @@
 #pip install streamlit
 #pip install plotly
 
+import altair as alt
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -55,7 +56,7 @@ st.dataframe(filtered_df)
 
 # Plots
 
-st.header("Test score vs. perceived ability")
+st.header("K-means clusters")
     st.altair_chart(
         create_point_chart(data, x="Kmeans cluster", y="Prime name"),
         theme=None,
