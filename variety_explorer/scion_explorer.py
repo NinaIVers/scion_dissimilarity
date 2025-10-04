@@ -57,7 +57,7 @@ st.dataframe(filtered_df)
 # Plots
 
 st.header("K-means clusters")
-    st.altair_chart(create_point_chart(data, x="Kmeans cluster", y="Prime name"))
+st.altair_chart(create_point_chart(data, x="Kmeans cluster", y="Prime name"))
 
 # Heatmap
 
