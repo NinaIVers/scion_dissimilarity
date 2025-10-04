@@ -55,9 +55,19 @@ st.subheader("Filtered Cultivar Data")
 st.dataframe(filtered_df)
 
 # Plots
+st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"))
 
-st.header("K-means clusters")
-st.altair_chart(create_point_chart(data, x="Kmeans cluster", y="Prime name"))
+def create_point_chart(data, x, y):
+    chart = alt.Chart(data).mark_circle(size=100).encode(
+        x=alt.X(x, title=x),
+        y=alt.Y(y, title=y),
+        color=alt.Color('Ward cluster:N', title='Ward Cluster'),
+        tooltip=['Prime name', 'Kmeans cluster', 'Ward cluster']
+    ).properties(
+        width=800,
+        height=500
+    ).interactive()
+    return chart
 
 # Heatmap
 
