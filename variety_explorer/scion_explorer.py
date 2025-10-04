@@ -78,6 +78,13 @@ fig = px.box(filtered_df, x='Kmeans cluster', y='End of maturation',
              title='Distribution of Maturation by K-means Cluster')
 st.plotly_chart(fig)
 
+#Parallel cordinate plot
+fig = px.parallel_coordinates(filtered_df,
+    dimensions=['End of maturation', 'Species', 'Parent 1', 'Parent 2'],
+    color='Kmeans cluster',
+    title='Multivariate Comparison of Cultivars')
+st.plotly_chart(fig)
+
 # Heatmap
 
 
