@@ -86,32 +86,27 @@ fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
 st.plotly_chart(fig_box)
 
 # Hist
+selected_variable = st.selectbox("Select a variable to view its histogram:", numeric_columns)
 
-# 🔸 Cria os histogramas
-fig, axes = plt.subplots(nrows=18, ncols=7, figsize=(21, 47))
-axes = axes.flatten()
+fig, ax = plt.subplots(figsize=(10, 4))
+df[selected_variable].plot(kind='hist',
+                           orientation='horizontal',
+                           color='mediumpurple',
+                           edgecolor='black',
+                           density=True,
+                           histtype='bar',
+                           stacked=True,
+                           ax=ax)
 
-for i, col in enumerate(numeric_columns):
-    ax = axes[i]
-    df[col].plot(kind='hist',
-                      orientation='horizontal',
-                      color='mediumpurple',
-                      edgecolor='black',
-                      density=True,
-                      histtype='bar',
-                      stacked=True,
-                      ax=ax)
-    ax.set_title(col, fontsize=11)
-    ax.set_xlabel('Frequency', fontsize=11)
-    ax.set_ylabel('Value', fontsize=11)
+ax.set_title(f'Histogram of {selected_variable}', fontsize=14)
+ax.set_xlabel('Frequency', fontsize=12)
+ax.set_ylabel('Value', fontsize=12)
+plt.grid(True)
 
-for j in range(i + 1, len(axes)):
-    fig.delaxes(axes[j])
-
-plt.subplots_adjust(wspace=0.4, hspace=0.4)
-
-st.subheader("📊 Histograms of Varietys Descriptors")
+# 🔹 Exibição no Streamlit
+st.subheader("📊 Histogram of Selected Descriptor")
 st.pyplot(fig)
+
 
 
 #Parallel cordinate plot
