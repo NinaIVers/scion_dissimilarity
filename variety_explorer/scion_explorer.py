@@ -89,7 +89,7 @@ st.plotly_chart(fig_box)
 selected_variable = st.selectbox("Select a variable to view its histogram:", numeric_columns)
 
 fig, ax = plt.subplots(figsize=(10, 4))
-df[selected_variable].plot(kind='hist',
+filtered_df[selected_variable].plot(kind='hist',
                            orientation='horizontal',
                            color='mediumpurple',
                            edgecolor='black',
@@ -103,11 +103,39 @@ ax.set_xlabel('Frequency', fontsize=12)
 ax.set_ylabel('Value', fontsize=12)
 plt.grid(True)
 
-# 🔹 Exibição no Streamlit
 st.subheader("📊 Histogram of Selected Descriptor")
 st.pyplot(fig)
 
+# Boxplot
 
+box_property = dict(color='black')
+flier_property = dict(marker='o', markerfacecolor='orchid',
+                      markersize=7, markeredgecolor='darkorchid')
+median_property = dict(linestyle='-', linewidth=3.5, color='orange')
+mean_point_property = dict(marker='D', markerfacecolor='darkorchid',
+                           markersize=5.8)
+
+selected_variable = st.selectbox("Select a variable to view its boxplot:", numeric_columns)
+
+fig, ax = plt.subplots(figsize=(10, 5))
+filtered_df[[selected_variable]].boxplot(
+    fontsize=13,
+    notch=True,
+    capprops=dict(linewidth=0.5),
+    meanprops=mean_point_property,
+    grid=True,
+    medianprops=median_property,
+    flierprops=flier_property,
+    boxprops=box_property,
+    ax=ax
+)
+
+ax.set_title(f'Boxplot of {selected_variable}', fontsize=14)
+plt.xticks(rotation=90)
+plt.yticks(rotation=45)
+
+st.subheader(" Boxplot of Selected Descriptor")
+st.pyplot(fig)
 
 #Parallel cordinate plot
 fig = px.parallel_coordinates(filtered_df,
