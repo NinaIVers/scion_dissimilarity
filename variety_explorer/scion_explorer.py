@@ -70,13 +70,15 @@ def create_point_chart(data, x, y):
 
 st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"))
 
-#Boxplot
-import plotly.express as px
+#Boxplot interativo
+numeric_columns = filtered_df.select_dtypes(include='number').columns.tolist()
+selected_y = st.selectbox("Select variable for boxplot (Y-axis):", numeric_columns)
 
-fig = px.box(filtered_df, x='Kmeans cluster', y='End of maturation',
-             color='Kmeans cluster', points='all',
-             title='Distribution of Maturation by K-means Cluster')
-st.plotly_chart(fig)
+fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
+                 color='Kmeans cluster', points='all',
+                 title=f'Distribution of {selected_y} by K-means Cluster')
+st.plotly_chart(fig_box)
+
 
 #Parallel cordinate plot
 fig = px.parallel_coordinates(filtered_df,
