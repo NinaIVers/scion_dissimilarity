@@ -19,9 +19,9 @@ st.set_page_config(layout = "wide")
 
 
 st.title("Grapevine Scion Variety Explorer 🍇🔍")
-st.markdown(textwrap.dedent("""\
+st.markdown("""
         [![Source Code](https://img.shields.io/badge/source_code-mediumpurple?style=for-the-badge&logo=GitHub&logoColor=black&labelColor=lightsteelblue)](https://github.com/NinaIVers/scion_dissimilarity.git)
-    """))
+        """)
 
 st.markdown(""" This interactive tool allows you to explore genetic dissimilarity among grapevine scion varieties.
 Use the filters on the sidebar to select specific cultivars or clustering groups.""")
