@@ -70,14 +70,20 @@ def create_point_chart(data, x, y):
 
 st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"))
 
+
+# Allowed features
+excluded_columns = ['Ward cluster', 'Kmeans cluster']
+numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns
+                   if col not in excluded_columns]
+
 #Boxplot interativo
-numeric_columns = filtered_df.select_dtypes(include='number').columns.tolist()
 selected_y = st.selectbox("Select variable for boxplot (Y-axis):", numeric_columns)
 
 fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
                  color='Kmeans cluster', points='all',
                  title=f'Distribution of {selected_y} by K-means Cluster')
 st.plotly_chart(fig_box)
+
 
 
 #Parallel cordinate plot
