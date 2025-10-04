@@ -10,6 +10,7 @@ import altair as alt
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import matplotlib.pyplot as plt
 
 # Load dataset
 df = pd.read_csv('variety_explorer/df_scion_normalized.csv',
@@ -84,6 +85,33 @@ fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
                  title=f'Distribution of {selected_y} by K-means Cluster')
 st.plotly_chart(fig_box)
 
+# Hist
+
+# 🔸 Cria os histogramas
+fig, axes = plt.subplots(nrows=18, ncols=7, figsize=(21, 47))
+axes = axes.flatten()
+
+for i, col in enumerate(numeric_columns):
+    ax = axes[i]
+    df_copa[col].plot(kind='hist',
+                      orientation='horizontal',
+                      color='mediumpurple',
+                      edgecolor='black',
+                      density=True,
+                      histtype='bar',
+                      stacked=True,
+                      ax=ax)
+    ax.set_title(col, fontsize=11)
+    ax.set_xlabel('Frequency', fontsize=11)
+    ax.set_ylabel('Value', fontsize=11)
+
+for j in range(i + 1, len(axes)):
+    fig.delaxes(axes[j])
+
+plt.subplots_adjust(wspace=0.4, hspace=0.4)
+
+st.subheader("📊 Histograms of Varietys Descriptors")
+st.pyplot(fig)
 
 
 #Parallel cordinate plot
