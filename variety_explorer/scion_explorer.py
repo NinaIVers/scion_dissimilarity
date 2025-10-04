@@ -93,7 +93,7 @@ axes = axes.flatten()
 
 for i, col in enumerate(numeric_columns):
     ax = axes[i]
-    df_copa[col].plot(kind='hist',
+    df[col].plot(kind='hist',
                       orientation='horizontal',
                       color='mediumpurple',
                       edgecolor='black',
