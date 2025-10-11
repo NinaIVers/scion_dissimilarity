@@ -147,7 +147,6 @@ with col1:
     plt.grid(True)
     st.pyplot(fig, use_container_width=True)
     st.subheader("📊 Histogram of Selected Descriptor")
-    st.pyplot(fig)             
 
 
 with col2:
