@@ -146,35 +146,10 @@ st.plotly_chart(fig)
 
 
 # Layout: three columns for main plots
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
-# 1. Altair Point Chart
+# 1. Histogram (Matplotlib)
 with col1:
-    st.markdown("#### KMeans vs. Prime Name (Altair)")
-    def create_point_chart(data, x, y):
-        chart = alt.Chart(data).mark_circle(size=100).encode(
-            x=alt.X(x, title=x),
-            y=alt.Y(y, title=y),
-            color=alt.Color('Ward cluster:N', title='Ward Cluster'),
-            tooltip=['Prime name', 'Kmeans cluster', 'Ward cluster']
-        ).properties(
-            width=300,
-            height=300
-        ).interactive()
-        return chart
-
-    st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"), use_container_width=True)
-
-# 2. Interactive Boxplot (Plotly)
-with col2:
-    selected_y = st.selectbox("Boxplot variable (Y-axis):", numeric_columns, key="boxplot_y")
-    fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
-                     color='Kmeans cluster', points='all',
-                     title=f'{selected_y} by K-means Cluster')
-    st.plotly_chart(fig_box, use_container_width=True)
-
-# 3. Histogram (Matplotlib)
-with col3:
     selected_hist = st.selectbox("Histogram variable:", numeric_columns, key="hist_var")
     fig, ax = plt.subplots(figsize=(5, 3))
     filtered_df[selected_hist].plot(kind='hist',
@@ -191,10 +166,8 @@ with col3:
     plt.grid(True)
     st.pyplot(fig, use_container_width=True)
 
-# 4. Secondary row: Matplotlib Boxplot and Parallel Coordinates
-col4, col5 = st.columns([1,2])
 
-with col4:
+with col2:
     st.markdown("#### Boxplot of Selected Descriptor (Matplotlib)")
     box_property = dict(color='black')
     flier_property = dict(marker='o', markerfacecolor='orchid',
@@ -220,17 +193,6 @@ with col4:
     plt.yticks(rotation=45)
     st.pyplot(fig2, use_container_width=True)
 
-with col5:
-    st.markdown("#### Parallel Coordinates Plot")
-    parallel_dims = [dim for dim in ['End of maturation', 'Species', 'Parent 1', 'Parent 2'] if dim in filtered_df.columns]
-    if len(parallel_dims) > 1:
-        fig_par = px.parallel_coordinates(filtered_df,
-            dimensions=parallel_dims,
-            color='Kmeans cluster',
-            title='Multivariate Comparison of Cultivars')
-        st.plotly_chart(fig_par, use_container_width=True)
-    else:
-        st.info("Not enough dimensions available for parallel coordinates plot.")
 
 
 # Footer
