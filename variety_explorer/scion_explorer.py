@@ -25,7 +25,7 @@ st.markdown("""
         [![Source Code](https://img.shields.io/badge/source_code-mediumpurple?style=for-the-badge&logo=GitHub&logoColor=black&labelColor=lightsteelblue)](https://github.com/NinaIVers/scion_dissimilarity.git)
         """)
 
-st.markdown(""" This interactive tool allows you to explore genetic dissimilarity among grapevine scion varieties.
+st.markdown(""" This interactive tool allows you to explore genetic dissimilarity among 64 grapevine scion varieties.
 Use the filters on the sidebar to select specific cultivars or clustering groups.""")
 
 
@@ -55,6 +55,16 @@ if selected_ward_group != 'All':
 st.subheader("Filtered Cultivar Data")
 st.dataframe(filtered_df)
 
+# Display data described
+stats = filtered_df.describe(include=['int64','float64']).round(5)
+st.dataframe(stats)
+
+
+# Allowed features
+excluded_columns = ['Ward cluster', 'Kmeans cluster']
+numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns
+                   if col not in excluded_columns]
+
 # Plots
 
 def create_point_chart(data, x, y):
@@ -72,12 +82,7 @@ def create_point_chart(data, x, y):
 st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"))
 
 
-# Allowed features
-excluded_columns = ['Ward cluster', 'Kmeans cluster']
-numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns
-                   if col not in excluded_columns]
-
-#Boxplot interativo
+#Boxplot
 selected_y = st.selectbox("Select variable for boxplot (Y-axis):", numeric_columns)
 
 fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
