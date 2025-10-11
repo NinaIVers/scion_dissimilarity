@@ -48,15 +48,16 @@ if selected_kmeans_group != 'All':
 if selected_ward_group != 'All':
     filtered_df = filtered_df[filtered_df['Ward cluster'] == selected_ward_group]
 
-# Display filtered data
-st.subheader("Filtered Scion Variety Data")
-stats = filtered_df.describe(include=['int64','float64']).round(5)
-st.dataframe(stats)
-
 # Allowed features
 excluded_columns = ['Ward cluster', 'Kmeans cluster']
 numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns
                    if col not in excluded_columns]
+
+# Display filtered data
+st.subheader("Filtered Scion Variety Data")
+stats = numeric_columns.describe(include=['int64','float64']).round(5)
+st.dataframe(stats)
+
 
 # Plots
 def create_point_chart(data, x, y):
@@ -75,7 +76,7 @@ st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime nam
 
 
 #Boxplot
-selected_y = st.selectbox("Select variable for boxplot (Y-axis):", numeric_columns)
+selected_y = st.selectbox("Select feature:", numeric_columns)
 
 fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
                  color='Kmeans cluster', points='all',
