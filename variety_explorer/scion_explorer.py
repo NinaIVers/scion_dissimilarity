@@ -145,6 +145,93 @@ st.plotly_chart(fig)
 # Heatmap
 
 
+# Layout: three columns for main plots
+col1, col2, col3 = st.columns(3)
+
+# 1. Altair Point Chart
+with col1:
+    st.markdown("#### KMeans vs. Prime Name (Altair)")
+    def create_point_chart(data, x, y):
+        chart = alt.Chart(data).mark_circle(size=100).encode(
+            x=alt.X(x, title=x),
+            y=alt.Y(y, title=y),
+            color=alt.Color('Ward cluster:N', title='Ward Cluster'),
+            tooltip=['Prime name', 'Kmeans cluster', 'Ward cluster']
+        ).properties(
+            width=300,
+            height=300
+        ).interactive()
+        return chart
+
+    st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"), use_container_width=True)
+
+# 2. Interactive Boxplot (Plotly)
+with col2:
+    selected_y = st.selectbox("Boxplot variable (Y-axis):", numeric_columns, key="boxplot_y")
+    fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
+                     color='Kmeans cluster', points='all',
+                     title=f'{selected_y} by K-means Cluster')
+    st.plotly_chart(fig_box, use_container_width=True)
+
+# 3. Histogram (Matplotlib)
+with col3:
+    selected_hist = st.selectbox("Histogram variable:", numeric_columns, key="hist_var")
+    fig, ax = plt.subplots(figsize=(5, 3))
+    filtered_df[selected_hist].plot(kind='hist',
+                                   orientation='horizontal',
+                                   color='mediumpurple',
+                                   edgecolor='black',
+                                   density=True,
+                                   histtype='bar',
+                                   stacked=True,
+                                   ax=ax)
+    ax.set_title(f'Histogram of {selected_hist}', fontsize=12)
+    ax.set_xlabel('Frequency', fontsize=10)
+    ax.set_ylabel('Value', fontsize=10)
+    plt.grid(True)
+    st.pyplot(fig, use_container_width=True)
+
+# 4. Secondary row: Matplotlib Boxplot and Parallel Coordinates
+col4, col5 = st.columns([1,2])
+
+with col4:
+    st.markdown("#### Boxplot of Selected Descriptor (Matplotlib)")
+    box_property = dict(color='black')
+    flier_property = dict(marker='o', markerfacecolor='orchid',
+                          markersize=7, markeredgecolor='darkorchid')
+    median_property = dict(linestyle='-', linewidth=3.5, color='orange')
+    mean_point_property = dict(marker='D', markerfacecolor='darkorchid',
+                               markersize=5.8)
+    selected_box_var = st.selectbox("Boxplot variable:", numeric_columns, key="matplotlib_box_var")
+    fig2, ax2 = plt.subplots(figsize=(5, 3))
+    filtered_df[[selected_box_var]].boxplot(
+        fontsize=10,
+        notch=True,
+        capprops=dict(linewidth=0.5),
+        meanprops=mean_point_property,
+        grid=True,
+        medianprops=median_property,
+        flierprops=flier_property,
+        boxprops=box_property,
+        ax=ax2
+    )
+    ax2.set_title(f'Boxplot of {selected_box_var}', fontsize=12)
+    plt.xticks(rotation=90)
+    plt.yticks(rotation=45)
+    st.pyplot(fig2, use_container_width=True)
+
+with col5:
+    st.markdown("#### Parallel Coordinates Plot")
+    parallel_dims = [dim for dim in ['End of maturation', 'Species', 'Parent 1', 'Parent 2'] if dim in filtered_df.columns]
+    if len(parallel_dims) > 1:
+        fig_par = px.parallel_coordinates(filtered_df,
+            dimensions=parallel_dims,
+            color='Kmeans cluster',
+            title='Multivariate Comparison of Cultivars')
+        st.plotly_chart(fig_par, use_container_width=True)
+    else:
+        st.info("Not enough dimensions available for parallel coordinates plot.")
+
 
 # Footer
 st.markdown("""
