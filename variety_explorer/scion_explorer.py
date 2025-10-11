@@ -55,7 +55,7 @@ numeric_columns = [col for col in filtered_df.select_dtypes(include='number').co
 
 # Display filtered data
 st.subheader("Filtered Scion Variety Data")
-stats = numeric_columns.describe()
+stats = filtered_df.describe()
 st.dataframe(stats)
 
 
