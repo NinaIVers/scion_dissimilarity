@@ -24,5 +24,7 @@ This app is hosted on Streamlit Cloud and can be accessed via the following link
 - Streamlit
 - Pandas
 - Plotly
+- Scikit-learn
+- Matplotlib
 
 
