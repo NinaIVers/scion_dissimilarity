@@ -53,9 +53,6 @@ if selected_ward_group != 'All':
 
 # Display filtered data
 st.subheader("Filtered Cultivar Data")
-st.dataframe(filtered_df)
-
-# Display data described
 stats = filtered_df.describe(include=['int64','float64']).round(5)
 st.dataframe(stats)
 
