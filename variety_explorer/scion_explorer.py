@@ -145,7 +145,7 @@ with col1:
     ax.set_xlabel('Frequency', fontsize=10)
     ax.set_ylabel('Value', fontsize=10)
     plt.grid(True)
-    st.pyplot(fig, use_container_width=True
+    st.pyplot(fig, use_container_width=True)
     st.subheader("📊 Histogram of Selected Descriptor")
     st.pyplot(fig)             
 
