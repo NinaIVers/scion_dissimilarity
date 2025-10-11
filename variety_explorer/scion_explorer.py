@@ -83,26 +83,7 @@ fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
                  title=f'Distribution of {selected_y} by K-means Cluster')
 st.plotly_chart(fig_box)
 
-# Hist
-selected_variable = st.selectbox("Select a variable to view its histogram:", numeric_columns)
 
-fig, ax = plt.subplots(figsize=(10, 4))
-filtered_df[selected_variable].plot(kind='hist',
-                           orientation='horizontal',
-                           color='mediumpurple',
-                           edgecolor='black',
-                           density=True,
-                           histtype='bar',
-                           stacked=True,
-                           ax=ax)
-
-ax.set_title(f'Histogram of {selected_variable}', fontsize=14)
-ax.set_xlabel('Frequency', fontsize=12)
-ax.set_ylabel('Value', fontsize=12)
-plt.grid(True)
-
-st.subheader("📊 Histogram of Selected Descriptor")
-st.pyplot(fig)
 
 # Boxplot
 
@@ -150,7 +131,7 @@ col1, col2 = st.columns(2)
 
 # 1. Histogram (Matplotlib)
 with col1:
-    selected_hist = st.selectbox("Histogram variable:", numeric_columns, key="hist_var")
+    selected_hist = st.selectbox("Select a variable to view its histogram:", numeric_columns, key="hist_var")
     fig, ax = plt.subplots(figsize=(5, 3))
     filtered_df[selected_hist].plot(kind='hist',
                                    orientation='horizontal',
@@ -164,7 +145,9 @@ with col1:
     ax.set_xlabel('Frequency', fontsize=10)
     ax.set_ylabel('Value', fontsize=10)
     plt.grid(True)
-    st.pyplot(fig, use_container_width=True)
+    st.pyplot(fig, use_container_width=True
+    st.subheader("📊 Histogram of Selected Descriptor")
+    st.pyplot(fig)             
 
 
 with col2:
