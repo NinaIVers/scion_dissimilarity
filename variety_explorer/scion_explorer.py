@@ -100,7 +100,7 @@ col1, col2 = st.columns(2)
 # 1. Histogram (Matplotlib)
 with col1:
     selected_hist = st.selectbox("Select a variable to view its histogram:", numeric_columns, key="hist_var")
-    st.markdown(f"####📊 Histogram of {selected_hist}")
+    st.markdown(f"#### 📊 Histogram of {selected_hist}")
 
     fig, ax = plt.subplots(figsize=(5, 3))
     filtered_df[selected_hist].plot(kind='hist',
