@@ -118,6 +118,7 @@ with col1:
 
 
 with col2:
+    selected_box_var = st.selectbox("Boxplot variable:", numeric_columns, key="matplotlib_box_var")
     st.markdown(f"#### 📊Boxplot of {selected_box_var}")
     box_property = dict(color='black')
     flier_property = dict(marker='o', markerfacecolor='orchid',
@@ -125,7 +126,7 @@ with col2:
     median_property = dict(linestyle='-', linewidth=3.5, color='orange')
     mean_point_property = dict(marker='D', markerfacecolor='darkorchid',
                                markersize=5.8)
-    selected_box_var = st.selectbox("Boxplot variable:", numeric_columns, key="matplotlib_box_var")
+
     fig2, ax2 = plt.subplots(figsize=(5, 3))
     filtered_df[[selected_box_var]].boxplot(
         fontsize=10,
