@@ -118,7 +118,7 @@ with col1:
 
 
 with col2:
-    selected_box_var = st.selectbox("Boxplot feature:", numeric_columns, key="matplotlib_box_var")
+    selected_box_var = st.selectbox("Select feature:", numeric_columns, key="matplotlib_box_var")
     st.markdown(f"#### 📊Boxplot of {selected_box_var}")
     box_property = dict(color='black')
     flier_property = dict(marker='o', markerfacecolor='orchid',
