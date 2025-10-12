@@ -139,7 +139,6 @@ with col2:
         boxprops=box_property,
         ax=ax2
     )
-    ax2.set_title(f'Boxplot of {selected_box_var}', fontsize=12)
     plt.xticks()
     plt.yticks(rotation=45)
     st.pyplot(fig2, use_container_width=True)
