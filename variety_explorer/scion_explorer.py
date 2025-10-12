@@ -128,7 +128,6 @@ st.plotly_chart(fig)
 
 # Layout: three columns for main plots
 col1, col2 = st.columns(2)
-jl
 # 1. Histogram (Matplotlib)
 with col1:
     selected_hist = st.selectbox("Select a variable to view its histogram:", numeric_columns, key="hist_var")
