@@ -94,7 +94,7 @@ st.plotly_chart(fig)
 # Heatmap
 
 
-# Layout: three columns for main plots
+# Layout: two columns for main plots
 col1, col2 = st.columns(2)
 
 # 1. Histogram (Matplotlib)
@@ -139,8 +139,8 @@ with col2:
         boxprops=box_property,
         ax=ax2
     )
-    plt.xticks()
-    plt.yticks(rotation=45)
+    plt.xticks(fontsize=10)
+    plt.yticks(rotation=45, fontsize=10)
     st.pyplot(fig2, use_container_width=True)
 
 
