@@ -99,7 +99,7 @@ col1, col2 = st.columns(2)
 
 # 1. Histogram (Matplotlib)
 with col1:
-    selected_hist = st.selectbox("Select a variable to view its histogram:", numeric_columns, key="hist_var")
+    selected_hist = st.selectbox("Select feature:", numeric_columns, key="hist_var")
     st.markdown(f"#### 📊 Histogram of {selected_hist}")
 
     fig, ax = plt.subplots(figsize=(5, 3))
@@ -118,7 +118,7 @@ with col1:
 
 
 with col2:
-    selected_box_var = st.selectbox("Boxplot variable:", numeric_columns, key="matplotlib_box_var")
+    selected_box_var = st.selectbox("Boxplot feature:", numeric_columns, key="matplotlib_box_var")
     st.markdown(f"#### 📊Boxplot of {selected_box_var}")
     box_property = dict(color='black')
     flier_property = dict(marker='o', markerfacecolor='orchid',
