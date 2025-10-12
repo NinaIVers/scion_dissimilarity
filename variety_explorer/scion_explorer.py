@@ -128,11 +128,11 @@ st.plotly_chart(fig)
 
 # Layout: three columns for main plots
 col1, col2 = st.columns(2)
-
+jl
 # 1. Histogram (Matplotlib)
 with col1:
     selected_hist = st.selectbox("Select a variable to view its histogram:", numeric_columns, key="hist_var")
-    st.markdown(f"📊 Histogram of {selected_hist}")
+    st.markdown(f"####📊 Histogram of {selected_hist}")
     fig, ax = plt.subplots(figsize=(5, 3))
     filtered_df[selected_hist].plot(kind='hist',
                                    orientation='horizontal',
@@ -142,7 +142,6 @@ with col1:
                                    histtype='bar',
                                    stacked=True,
                                    ax=ax)
-    ax.set_title(f'Histogram of {selected_hist}', fontsize=12)
     ax.set_xlabel('Frequency', fontsize=10)
     ax.set_ylabel('Value', fontsize=10)
     plt.grid(True)
@@ -150,7 +149,7 @@ with col1:
 
 
 with col2:
-    st.markdown("#### Boxplot of Selected Descriptor (Matplotlib)")
+    st.markdown(f"#### 📊Boxplot of {selected_hist}")
     box_property = dict(color='black')
     flier_property = dict(marker='o', markerfacecolor='orchid',
                           markersize=7, markeredgecolor='darkorchid')
