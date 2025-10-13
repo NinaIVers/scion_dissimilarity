@@ -100,12 +100,27 @@ with tab2:
     st.plotly_chart(fig_box)
 
 
+    # Criar dicionários de mapeamento
+    species_map = dict(zip(filtered_df['Species'], filtered_df['Species_str']))
+    parent1_map = dict(zip(filtered_df['Parent 1'], filtered_df['Parent 1_str']))
+    parent2_map = dict(zip(filtered_df['Parent 2'], filtered_df['Parent 2_str']))
+
     st.subheader("🌐 Parallel Coordinates")
     fig_parallel = px.parallel_coordinates(filtered_df,
-        dimensions=['End of maturation', 'Species', 'Parent 1', 'Parent 2'],
-        color='Kmeans cluster',
-        title='Multivariate Comparison of Cultivars')
-    st.plotly_chart(fig_parallel)
+                                           dimensions=['End of maturation', 'Species', 'Parent 1', 'Parent 2'],
+                                           color='Kmeans cluster')
+    st.plotly_chart(fig_parallel, use_container_width=True)
+    
+    with st.expander("🧬 Species and Parent Name Legend"):
+    st.markdown("**Species Mapping**")
+    st.dataframe(pd.DataFrame.from_dict(species_map, orient='index', columns=['Species_str']).rename_axis("Species Value"))
+
+    st.markdown("**Parent 1 Mapping**")
+    st.dataframe(pd.DataFrame.from_dict(parent1_map, orient='index', columns=['Parent 1_str']).rename_axis("Parent 1 Value"))
+
+    st.markdown("**Parent 2 Mapping**")
+    st.dataframe(pd.DataFrame.from_dict(parent2_map, orient='index', columns=['Parent 2_str']).rename_axis("Parent 2 Value"))
+
 
 # Tab 3: Distributions
 with tab3:
