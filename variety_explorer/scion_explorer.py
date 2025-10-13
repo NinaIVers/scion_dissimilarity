@@ -85,11 +85,6 @@ with tab1:
     st.subheader("Filtered Scion Variety Statistics")
     st.dataframe(filtered_df.describe(include=['int64', 'float64']).round(5))
 
-    st.download_button("📥 Download Filtered Data", 
-                       data=filtered_df.to_csv(index=False).encode('utf-8'),
-                       file_name='scion_filtered.csv',
-                       mime='text/csv')
-
 # Tab 2: Interactive Charts
 with tab2:
 
