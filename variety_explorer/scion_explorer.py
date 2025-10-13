@@ -132,7 +132,7 @@ with tab4:
     corr = filtered_df[numeric_columns].corr(method='pearson')
     mask = np.triu(np.ones_like(corr, dtype=bool))
     
-    corr_heatmap = sns.heatmap(corr, vmin=-1, vmax=1, linewidths=.5,
+    fig_heat = sns.heatmap(corr, vmin=-1, vmax=1, linewidths=.5,
                                mask=mask, fmt ='.1f', cmap='PRGn_r',
                                cbar_kws={"orientation": "horizontal",
                                     "shrink": 0.7, "location" : "bottom",
