@@ -130,27 +130,33 @@ with tab3:
 with tab4:
     st.subheader("📈 Pearson Correlation Heatmap")
 
-    # Compute Pearson correlation
+    # Compute correlation matrix
     corr = filtered_df[numeric_columns].corr(method='pearson').round(2)
 
-    # Create interactive heatmap
-    fig_heat = px.imshow(corr,
-                         text_auto=True,
-                         color_continuous_scale='RdBu_r',
-                         zmin=-1, zmax=1,
-                         aspect="auto",
-                         title="📈 Pearson Correlation Between Features")
+    # Create Plotly heatmap
+    fig_heat = px.imshow(
+        corr,
+        text_auto=True,
+        color_continuous_scale='BrBG',  # Closest to Seaborn's 'PRGn_r'
+        zmin=-1, zmax=1,
+        aspect="auto",
+        title="📈 Pearson Correlation Between Features"
+    )
 
+    # Customize layout to match Seaborn style
     fig_heat.update_layout(
         width=1000,
         height=800,
         margin=dict(l=50, r=50, t=80, b=50),
         coloraxis_colorbar=dict(
             title="Pearson Coefficient",
-            orientation="h",
-            x=0.5,
-            xanchor="center"
-        )
+            orientation="h",         # Horizontal
+            x=0.5,                   # Centered
+            xanchor="center",
+            thickness=20,
+            len=0.8
+        ),
+        font=dict(size=12)
     )
 
     st.plotly_chart(fig_heat, use_container_width=True)
