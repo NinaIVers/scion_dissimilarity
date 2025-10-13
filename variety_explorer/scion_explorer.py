@@ -143,8 +143,8 @@ with tab4:
                         )
     
     fig_heat.update_layout(
-        width=800,
-        height=800,
+        width=1000,
+        height=1000,
         margin=dict(l=90, r=90, t=90, b=90))
 
     st.plotly_chart(fig_heat, use_container_width=True)
