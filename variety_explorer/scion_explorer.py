@@ -78,12 +78,17 @@ excluded_columns = ['Ward cluster', 'Kmeans cluster']
 numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns if col not in excluded_columns]
 
 # Tabs for layout
-tab1, tab2, tab3, tab4 = st.tabs(["📋 Summary", "📈 Interactive Charts", "📊 Distributions", "🧬 Pearson Correlation"])
+tab1, tab2, tab3, tab4 = st.tabs(["📋 Summary", "📈 Interactive Charts", "📊 Distributions", "🧬 Information"])
 
 # Tab 1: Summary
 with tab1:
     st.subheader("Filtered Scion Variety Statistics")
     st.dataframe(filtered_df.describe(include=['int64', 'float64']).round(5))
+
+    fig = px.scatter_matrix(filtered_df, dimensions=numeric_columns[:5], color='Ward cluster',
+                            title='Matriz de Dispersão entre Variáveis')
+    st.plotly_chart(fig, use_container_width=True)
+
 
 # Tab 2: Interactive Charts
 with tab2:
@@ -141,31 +146,9 @@ with tab3:
         st.pyplot(fig2, use_container_width=True)
 
 
-
-# Tab 3: Correlation
 with tab4:
-    st.subheader("📈 Pearson Correlation Heatmap")
-
-    # Compute correlation matrix
-    corr = filtered_df[numeric_columns].corr(method='pearson').round(2)
-
-
-    fig_heat = px.imshow(
-                        corr, 
-                        color_continuous_scale='BrBG',
-                        text_auto=True,
-                        zmin=-1, zmax=1,
-                        aspect="auto"
-                        )
+    st.markdown(f"#### 📊 Histogram of {selected_feature}")
     
-    fig_heat.update_layout(
-        width=900,
-        height=1000,
-        margin=dict(l=90, r=90, t=90, b=90))
-
-    st.plotly_chart(fig_heat, use_container_width=True)
-
-
 # Footer
 st.markdown("""
 ---
