@@ -86,9 +86,9 @@ with tab1:
     st.dataframe(filtered_df.describe(include=['int64', 'float64']).round(5))
 
 # Interactive interface
-st.subheader("📈 Scatter Plot by Variable")
+st.subheader("📈 Scatter Plot")
 
-selected_var = st.selectbox("Select a numeric variable to visualize:", numeric_columns)
+selected_var = st.selectbox("Select a feature to visualize:", numeric_columns)
 
 # Create the scatter plot
 fig, ax = plt.subplots(figsize=(10, 5))
@@ -96,7 +96,7 @@ fig, ax = plt.subplots(figsize=(10, 5))
 ax.scatter(filtered_df.index, filtered_df[selected_var], alpha=0.5)
 ax.set_title(f'{selected_var} Scatter Plot', fontsize=16)
 ax.set_xlabel('Index', fontsize=12)
-ax.set_ylabel(selected_var, fontsize=12)
+ax.set_ylabel(ed_var, fontsize=12)
 
 # Add horizontal line for the mean
 mean_value = filtered_df[selected_var].mean()
@@ -110,7 +110,7 @@ st.pyplot(fig)
 # Tab 2: Interactive Charts
 with tab2:
 
-    selected_y = st.selectbox("Select feature for boxplot:", numeric_columns)
+    selected_y = st.selectbox("Select feature to visualize:", numeric_columns)
     st.markdown(f"#### 📊 Distribution of {selected_y} by K-means Cluster")
     fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
                      color='Kmeans cluster', points='all')
@@ -124,7 +124,7 @@ with tab2:
 # Tab 3: Distributions
 with tab3:
     
-    selected_feature = st.selectbox("Select feature:", numeric_columns, key="hist_var")
+    selected_feature = st.selectbox("Select feature to visualize:", numeric_columns, key="hist_var")
     col1, col2 = st.columns(2)
 
     with col1:
@@ -164,7 +164,7 @@ with tab3:
 
 
 with tab4:
-    st.markdown(f"#### 📊 Histogram of {selected_feature}")
+    
     
 # Footer
 st.markdown("""
