@@ -88,7 +88,7 @@ with tab1:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader(f"📊 Statistics Bar Chart for {selected_var}")
+        st.subheader(f"📊 Bar Chart for {selected_var}")
         # Compute summary statistics
         stats = filtered_df[selected_var].describe().round(1)
         stats_df = stats.reset_index()
