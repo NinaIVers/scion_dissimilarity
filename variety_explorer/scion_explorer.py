@@ -113,13 +113,23 @@ with tab2:
     
     with st.expander("🧬 Species and Parent Name Legend"):
     st.markdown("**Species Mapping**")
-    st.dataframe(pd.DataFrame.from_dict(species_map, orient='index', columns=['Species_str']).rename_axis("Species Value"))
+    st.dataframe(
+        pd.DataFrame.from_dict(species_map, orient='index', columns=['Species_str'])
+        .rename_axis("Species")
+    )
 
     st.markdown("**Parent 1 Mapping**")
-    st.dataframe(pd.DataFrame.from_dict(parent1_map, orient='index', columns=['Parent 1_str']).rename_axis("Parent 1 Value"))
+    st.dataframe(
+        pd.DataFrame.from_dict(parent1_map, orient='index', columns=['Parent 1_str'])
+        .rename_axis("Parent 1")
+    )
 
     st.markdown("**Parent 2 Mapping**")
-    st.dataframe(pd.DataFrame.from_dict(parent2_map, orient='index', columns=['Parent 2_str']).rename_axis("Parent 2 Value"))
+    st.dataframe(
+        pd.DataFrame.from_dict(parent2_map, orient='index', columns=['Parent 2_str'])
+        .rename_axis("Parent 2")
+    )
+
 
 
 # Tab 3: Distributions
