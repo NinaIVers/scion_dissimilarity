@@ -95,12 +95,11 @@ with tab1:
         ax.scatter(filtered_df.index, filtered_df[selected_var], alpha=0.5)
         ax.set_title(f'{selected_var} Scatter Plot', fontsize=16)
         ax.set_xlabel('Index', fontsize=12)
-        ax.set_ylabel(ed_var, fontsize=12)
+        ax.set_ylabel(selected_var, fontsize=12)
     
         mean_value = filtered_df[selected_var].mean()
         ax.axhline(y=mean_value, color='navy', linestyle='--', label=f'Average = {mean_value:.2f}')
         ax.legend()
-        
         st.pyplot(fig)
 
 
