@@ -165,5 +165,4 @@ with tab4:
 # Footer
 st.markdown("""
 ---
-**Note:** This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning. 🔬🍇
-""")
+**Note:** This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning. 🔬🍇 """)
