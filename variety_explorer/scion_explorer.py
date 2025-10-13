@@ -89,30 +89,22 @@ with tab1:
 
     with col1:
         st.subheader("📊 Summary Statistics Bar Chart")
-    
         # Compute summary statistics
         stats = filtered_df[selected_var].describe().round(1)
         stats_df = stats.reset_index()
         stats_df.columns = ['Statistic', 'Value']
     
-        # Plot using Seaborn
-        fig, ax = plt.subplots(figsize=(7, 5))
-        sns.barplot(x='Statistic', y='Value', data=stats_df, color='deepskyblue', ax=ax)
-    
-        # Add value labels
-        for p in ax.patches:
-            ax.text(p.get_x() + p.get_width() / 2,
-                    p.get_height() * 1.02,
-                    f'{p.get_height():.1f}',
-                    ha='center', va='bottom', fontsize=11)
-    
-        ax.set_title(f'Summary of {selected_var}', fontsize=16)
-        ax.set_ylabel('Value', fontsize=12)
-        ax.set_xlabel('Statistic', fontsize=12)
-        plt.xticks(fontsize=11)
-        plt.yticks(fontsize=11)
-        plt.grid(True)
-        st.pyplot(fig)
+        # Create Altair chart
+        chart = alt.Chart(stats_df).mark_bar(color='deepskyblue').encode(
+                                                                            x=alt.X('Statistic:N', title='Statistic'),
+                                                                            y=alt.Y('Value:Q', title='Value'),
+                                                                            tooltip=['Statistic', 'Value']
+                                                                        ).properties(
+                                                                            title=f'Summary Statistics for {selected_var}',
+                                                                            width=400,
+                                                                            height=300
+                                                                    )
+
         
     with col2:
         st.subheader("📈 Scatter Plot")
