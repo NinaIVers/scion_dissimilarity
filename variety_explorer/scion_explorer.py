@@ -1,10 +1,8 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
 import altair as alt
 import plotly.express as px
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Performance: cache data loading
 @st.cache_data
