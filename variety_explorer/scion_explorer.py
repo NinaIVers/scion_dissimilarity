@@ -85,26 +85,26 @@ with tab1:
     st.subheader("Filtered Scion Variety Statistics")
     st.dataframe(filtered_df.describe(include=['int64', 'float64']).round(5))
 
-# Interactive interface
-st.subheader("📈 Scatter Plot")
-
-selected_var = st.selectbox("Select a feature to visualize:", numeric_columns)
-
-# Create the scatter plot
-fig, ax = plt.subplots(figsize=(10, 5))
-
-ax.scatter(filtered_df.index, filtered_df[selected_var], alpha=0.5)
-ax.set_title(f'{selected_var} Scatter Plot', fontsize=16)
-ax.set_xlabel('Index', fontsize=12)
-ax.set_ylabel(ed_var, fontsize=12)
-
-# Add horizontal line for the mean
-mean_value = filtered_df[selected_var].mean()
-ax.axhline(y=mean_value, color='navy', linestyle='--', label=f'Average = {mean_value:.2f}')
-ax.legend()
-
-# Display the plot in Streamlit
-st.pyplot(fig)
+    # Interactive interface
+    st.subheader("📈 Scatter Plot")
+    
+    selected_var = st.selectbox("Select a feature to visualize:", numeric_columns)
+    
+    # Create the scatter plot
+    fig, ax = plt.subplots(figsize=(10, 5))
+    
+    ax.scatter(filtered_df.index, filtered_df[selected_var], alpha=0.5)
+    ax.set_title(f'{selected_var} Scatter Plot', fontsize=16)
+    ax.set_xlabel('Index', fontsize=12)
+    ax.set_ylabel(ed_var, fontsize=12)
+    
+    # Add horizontal line for the mean
+    mean_value = filtered_df[selected_var].mean()
+    ax.axhline(y=mean_value, color='navy', linestyle='--', label=f'Average = {mean_value:.2f}')
+    ax.legend()
+    
+    # Display the plot in Streamlit
+    st.pyplot(fig)
 
 
 # Tab 2: Interactive Charts
