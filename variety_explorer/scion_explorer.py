@@ -111,25 +111,20 @@ with tab2:
                                            color='Kmeans cluster')
     st.plotly_chart(fig_parallel, use_container_width=True)
     
-    with st.expander("🧬 Species and Parent Name Legend"):
-    st.markdown("**Species Mapping**")
-    st.dataframe(
-        pd.DataFrame.from_dict(species_map, orient='index', columns=['Species_str'])
-        .rename_axis("Species")
-    )
+with st.expander("🧬 Species and Parent Name Legend"):
+    col1, col2, col3 = st.columns(3)
 
-    st.markdown("**Parent 1 Mapping**")
-    st.dataframe(
-        pd.DataFrame.from_dict(parent1_map, orient='index', columns=['Parent 1_str'])
-        .rename_axis("Parent 1")
-    )
+    with col1:
+        st.markdown("**Species Mapping**")
+        st.dataframe(pd.DataFrame.from_dict(species_map, orient='index', columns=['Species_str']).rename_axis("Species"))
 
-    st.markdown("**Parent 2 Mapping**")
-    st.dataframe(
-        pd.DataFrame.from_dict(parent2_map, orient='index', columns=['Parent 2_str'])
-        .rename_axis("Parent 2")
-    )
+    with col2:
+        st.markdown("**Parent 1 Mapping**")
+        st.dataframe(pd.DataFrame.from_dict(parent1_map, orient='index', columns=['Parent 1_str']).rename_axis("Parent 1"))
 
+    with col3:
+        st.markdown("**Parent 2 Mapping**")
+        st.dataframe(pd.DataFrame.from_dict(parent2_map, orient='index', columns=['Parent 2_str']).rename_axis("Parent 2"))
 
 
 # Tab 3: Distributions
