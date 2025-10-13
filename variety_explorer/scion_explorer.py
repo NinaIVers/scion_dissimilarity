@@ -92,20 +92,18 @@ with tab1:
 
 # Tab 2: Interactive Charts
 with tab2:
-    st.subheader("Scatter Plot by Cluster")
-    scatter = alt.Chart(filtered_df).mark_circle(size=100).encode(
-        x=alt.X("Kmeans cluster:N", title="K-means Cluster"),
-        y=alt.Y("Prime name:N", title="Scion Variety"),
-        color=alt.Color("Ward cluster:N", title="Ward Cluster"),
-        tooltip=["Prime name", "Kmeans cluster", "Ward cluster"]
-    ).properties(width=800, height=500).interactive()
-    st.altair_chart(scatter)
 
     selected_y = st.selectbox("Select feature for boxplot:", numeric_columns)
+    st.markdown(f"#### 📊 Distribution of {selected_y} by K-means Cluster")
     fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
-                     color='Kmeans cluster', points='all',
-                     title=f'Distribution of {selected_y} by K-means Cluster')
+                     color='Kmeans cluster', points='all')
     st.plotly_chart(fig_box)
+
+    st.markdown(f"#### 📊 Distribution of {selected_y} by Ward Cluster")
+    fig_box = px.box(filtered_df, x='Ward cluster', y=selected_y,
+                     color='Ward cluster', points='all')
+    st.plotly_chart(fig_box)
+
 
     st.subheader("🌐 Parallel Coordinates")
     fig_parallel = px.parallel_coordinates(filtered_df,
