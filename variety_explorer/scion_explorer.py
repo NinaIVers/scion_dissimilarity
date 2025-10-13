@@ -104,6 +104,7 @@ with tab1:
                                                                             width=400,
                                                                             height=300
                                                                     )
+        st.altair_chart(chart, use_container_width=True)
 
         
     with col2:
