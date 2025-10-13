@@ -135,25 +135,12 @@ with tab4:
 
 
     fig_heat = px.imshow(
-                        corr,
+                        corr, 
+                        color_continuous_scale='BrBG',
                         text_auto=True,
                         zmin=-1, zmax=1,
                         aspect="auto"
                         )
-
-    fig_heat.update_layout(
-        width=1000,
-        height=800,
-        margin=dict(l=50, r=50, t=80, b=50),
-        coloraxis_colorbar=dict(
-            title="Pearson Coefficient",
-            orientation="h",        
-            x=0.5,
-            thickness=20,
-            len=0.8
-        ),
-        font=dict(size=12)
-    )
 
     st.plotly_chart(fig_heat, use_container_width=True)
 
