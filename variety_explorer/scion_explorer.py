@@ -25,9 +25,9 @@ Explore genetic dissimilarity among 64 grapevine scion varieties using interacti
 # Sidebar filters
 st.sidebar.header("🔎 Filter Options")
 
-# Initialize session state for filters
+# Initialize session state
 if "selected_varieties" not in st.session_state:
-    st.session_state.selected_varieties = []
+    st.session_state.selected_varieties = df['Prime name'].unique().tolist()
 if "selected_kmeans_group" not in st.session_state:
     st.session_state.selected_kmeans_group = 'All'
 if "selected_ward_group" not in st.session_state:
@@ -35,11 +35,11 @@ if "selected_ward_group" not in st.session_state:
 
 # Clear filters button
 if st.sidebar.button("🧹 Clear Filters"):
-    st.session_state.selected_varieties = []
+    st.session_state.selected_varieties = df['Prime name'].unique().tolist()
     st.session_state.selected_kmeans_group = 'All'
     st.session_state.selected_ward_group = 'All'
 
-# Always render widgets with current session state values
+# Render widgets with current session state
 selected_varieties = st.sidebar.multiselect(
     "Select Scion Varieties:",
     options=df['Prime name'].unique(),
@@ -62,7 +62,6 @@ selected_ward_group = st.sidebar.selectbox(
 st.session_state.selected_varieties = selected_varieties
 st.session_state.selected_kmeans_group = selected_kmeans_group
 st.session_state.selected_ward_group = selected_ward_group
-
 
 # Apply filters
 filtered_df = df.copy()
