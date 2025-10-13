@@ -141,6 +141,11 @@ with tab4:
                         zmin=-1, zmax=1,
                         aspect="auto"
                         )
+    
+    fig_heat.update_layout(
+        width=800,
+        height=800,
+        margin=dict(l=50, r=50, t=80, b=80))
 
     st.plotly_chart(fig_heat, use_container_width=True)
 
