@@ -170,7 +170,7 @@ with tab4:
                         )
     
     fig_heat.update_layout(
-        width=1000,
+        width=1010,
         height=1000,
         margin=dict(l=90, r=90, t=90, b=90))
 
