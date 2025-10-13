@@ -107,12 +107,18 @@ with tab2:
     st.plotly_chart(fig_parallel, use_container_width=True)
 
 
-    fig_sunburst = px.sunburst(
-                                filtered_df,
-                                path=['Species_str', 'Parent 1_str', 'Parent 2_str'],
-                                title='Hierarquia Genética das Cultivares'
-                            )
-    st.plotly_chart(fig_sunburst, use_container_width=True)
+  st.subheader("🌞 Hierarquia Genética das Cultivares")
+
+sunburst_df = filtered_df[['Species', 'Parent 1', 'Parent 2']].dropna()
+
+fig_sunburst = px.sunburst(
+    sunburst_df,
+    path=['Species', 'Parent 1', 'Parent 2'],
+    title='Hierarquia Genética das Cultivares'
+)
+
+st.plotly_chart(fig_sunburst, use_container_width=True)
+
 
 
 # Tab 3: Distributions
