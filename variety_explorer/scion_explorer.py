@@ -109,15 +109,15 @@ with tab2:
 
   st.subheader("🌞 Hierarquia Genética das Cultivares")
 
-sunburst_df = filtered_df[['Species', 'Parent 1', 'Parent 2']].dropna()
-
-fig_sunburst = px.sunburst(
-    sunburst_df,
-    path=['Species', 'Parent 1', 'Parent 2'],
-    title='Hierarquia Genética das Cultivares'
-)
-
-st.plotly_chart(fig_sunburst, use_container_width=True)
+  sunburst_df = filtered_df[['Species', 'Parent 1', 'Parent 2']].dropna()
+    
+    fig_sunburst = px.sunburst(
+                                sunburst_df,
+                                path=['Species', 'Parent 1', 'Parent 2'],
+                                title='Hierarquia Genética das Cultivares'
+                            )
+                            
+    st.plotly_chart(fig_sunburst, use_container_width=True)
 
 
 
