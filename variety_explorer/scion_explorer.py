@@ -88,7 +88,7 @@ with tab1:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader(f"####📊 Statistics Bar Chart for {selected_var}")
+        st.subheader(f"📊 Statistics Bar Chart for {selected_var}")
         # Compute summary statistics
         stats = filtered_df[selected_var].describe().round(1)
         stats_df = stats.reset_index()
@@ -107,7 +107,7 @@ with tab1:
 
         
     with col2:
-        st.subheader(f"####📈 Scatter Plot for {selected_var}")
+        st.subheader(f"📈 Scatter Plot for {selected_var}")
         
         fig, ax = plt.subplots(figsize=(7, 5))
         ax.scatter(filtered_df.index, filtered_df[selected_var], alpha=0.5)
