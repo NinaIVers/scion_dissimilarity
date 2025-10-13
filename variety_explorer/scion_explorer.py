@@ -86,7 +86,7 @@ with tab1:
 
     with col1:
         st.subheader("Scion Variety Statistics")
-        st.dataframe(filtered_df.describe(include=[numeric_columns]).round(5))
+        st.dataframe(filtered_df.describe(numeric_columns).round(5))
         
     with col2:
         st.subheader("📈 Scatter Plot")
