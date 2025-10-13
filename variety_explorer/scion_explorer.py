@@ -22,20 +22,29 @@ st.markdown("""
 Explore genetic dissimilarity among 64 grapevine scion varieties using interactive visualizations and clustering filters.
 """)
 
+
 # Sidebar filters
 st.sidebar.header("🔎 Filter Options")
-selected_varieties = st.sidebar.multiselect("Select Scion Varieties:", df['Prime name'].unique())
-selected_kmeans_group = st.sidebar.selectbox("Select K-means Cluster:", ['All'] + sorted(df['Kmeans cluster'].unique()))
-selected_ward_group = st.sidebar.selectbox("Select Ward Cluster:", ['All'] + sorted(df['Ward cluster'].unique()))
 
-# Apply filters
-filtered_df = df.copy()
-if selected_varieties:
-    filtered_df = filtered_df[filtered_df['Prime name'].isin(selected_varieties)]
-if selected_kmeans_group != 'All':
-    filtered_df = filtered_df[filtered_df['Kmeans cluster'] == selected_kmeans_group]
-if selected_ward_group != 'All':
-    filtered_df = filtered_df[filtered_df['Ward cluster'] == selected_ward_group]
+# Initialize session state
+if "clear_filters" not in st.session_state:
+    st.session_state.clear_filters = False
+
+# Clear filters button
+if st.sidebar.button("🧹 Clear Filters"):
+    st.session_state.clear_filters = True
+
+# Apply filters or reset
+if st.session_state.clear_filters:
+    selected_varieties = []
+    selected_kmeans_group = 'All'
+    selected_ward_group = 'All'
+    st.session_state.clear_filters = False  # Reset flag
+else:
+    selected_varieties = st.sidebar.multiselect("Select Scion Varieties:", df['Prime name'].unique())
+    selected_kmeans_group = st.sidebar.selectbox("Select K-means Cluster:", ['All'] + sorted(df['Kmeans cluster'].unique()))
+    selected_ward_group = st.sidebar.selectbox("Select Ward Cluster:", ['All'] + sorted(df['Ward cluster'].unique()))
+
 
 # Handle empty filter result
 if filtered_df.empty:
