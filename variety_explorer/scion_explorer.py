@@ -137,7 +137,6 @@ with tab4:
     fig_heat = px.imshow(
                         corr,
                         text_auto=True,
-                        color_continuous_scale='PRGn',
                         zmin=-1, zmax=1,
                         aspect="auto"
                         )
