@@ -85,9 +85,33 @@ with tab1:
     st.subheader("Filtered Scion Variety Statistics")
     st.dataframe(filtered_df.describe(include=['int64', 'float64']).round(5))
 
-    fig = px.scatter_matrix(filtered_df, dimensions=numeric_columns[:5], color='Ward cluster',
-                            title='Matriz de Dispersão entre Variáveis')
-    st.plotly_chart(fig, use_container_width=True)
+    import streamlit as st
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Filter numeric columns from the filtered dataset
+numeric_columns = filtered_df.select_dtypes(include='number').columns.tolist()
+
+# Interactive interface
+st.subheader("📈 Scatter Plot by Variable")
+
+selected_var = st.selectbox("Select a numeric variable to visualize:", numeric_columns)
+
+# Create the scatter plot
+fig, ax = plt.subplots(figsize=(10, 5))
+
+ax.scatter(filtered_df.index, filtered_df[selected_var], alpha=0.5)
+ax.set_title(f'{selected_var} Scatter Plot', fontsize=16)
+ax.set_xlabel('Index', fontsize=12)
+ax.set_ylabel(selected_var, fontsize=12)
+
+# Add horizontal line for the mean
+mean_value = filtered_df[selected_var].mean()
+ax.axhline(y=mean_value, color='navy', linestyle='--', label=f'Average = {mean_value:.2f}')
+ax.legend()
+
+# Display the plot in Streamlit
+st.pyplot(fig)
 
 
 # Tab 2: Interactive Charts
