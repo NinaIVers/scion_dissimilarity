@@ -129,20 +129,31 @@ with tab3:
 # Tab 3: Correlation
 with tab4:
     st.subheader("📈 Pearson Correlation Heatmap")
-    corr = filtered_df[numeric_columns].corr(method='pearson')
-    mask = np.triu(np.ones_like(corr, dtype=bool))
 
-    fig, ax = plt.subplots(figsize=(20,27))
-    sns.heatmap(corr, vmin=-1, vmax=1, linewidths=.5, annot = True,
-                mask=mask, fmt='.1f', cmap='PRGn_r',
-                cbar_kws={"orientation": "horizontal",
-                          "shrink": 0.7, "location": "bottom",
-                          "aspect": 30, 'label': 'Pearson coefficient',
-                          "spacing": "proportional"},
-                ax=ax)
+    # Compute Pearson correlation
+    corr = filtered_df[numeric_columns].corr(method='pearson').round(2)
 
-    st.pyplot(fig, use_container_width=True)
+    # Create interactive heatmap
+    fig_heat = px.imshow(corr,
+                         text_auto=True,
+                         color_continuous_scale='RdBu_r',
+                         zmin=-1, zmax=1,
+                         aspect="auto",
+                         title="📈 Pearson Correlation Between Features")
 
+    fig_heat.update_layout(
+        width=1000,
+        height=800,
+        margin=dict(l=50, r=50, t=80, b=50),
+        coloraxis_colorbar=dict(
+            title="Pearson Coefficient",
+            orientation="h",
+            x=0.5,
+            xanchor="center"
+        )
+    )
+
+    st.plotly_chart(fig_heat, use_container_width=True)
 
 
 # Footer
