@@ -78,7 +78,7 @@ excluded_columns = ['Ward cluster', 'Kmeans cluster']
 numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns if col not in excluded_columns]
 
 # Tabs for layout
-tab1, tab2, tab3, tab4 = st.tabs(["📋 Summary", "📈 Interactive Charts", "📊 Distributions", "🧬 Information"])
+tab1, tab2, tab3 = st.tabs(["📋 Summary", "📈 Interactive Charts", "📊 Distributions"])
 
 # Tab 1: Summary
 with tab1:
@@ -159,8 +159,6 @@ with tab3:
         st.pyplot(fig2, use_container_width=True)
 
 
-with tab4:
-    
     
 # Footer
 st.markdown("""
