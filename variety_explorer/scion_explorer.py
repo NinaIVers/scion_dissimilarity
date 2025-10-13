@@ -23,30 +23,31 @@ Explore genetic dissimilarity among 64 grapevine scion varieties using interacti
 """)
 
 
-# Sidebar filters
-st.sidebar.header("🔎 Filter Options")
+# Apply filters
+filtered_df = df.copy()
 
-# Initialize session state
+# Clear filters logic (if you're using session_state)
 if "clear_filters" not in st.session_state:
     st.session_state.clear_filters = False
 
-# Clear filters button
 if st.sidebar.button("🧹 Clear Filters"):
     st.session_state.clear_filters = True
 
-# Apply filters or reset
 if st.session_state.clear_filters:
     selected_varieties = []
     selected_kmeans_group = 'All'
     selected_ward_group = 'All'
-    st.session_state.clear_filters = False  # Reset flag
-else:
-    selected_varieties = st.sidebar.multiselect("Select Scion Varieties:", df['Prime name'].unique())
-    selected_kmeans_group = st.sidebar.selectbox("Select K-means Cluster:", ['All'] + sorted(df['Kmeans cluster'].unique()))
-    selected_ward_group = st.sidebar.selectbox("Select Ward Cluster:", ['All'] + sorted(df['Ward cluster'].unique()))
+    st.session_state.clear_filters = False
 
+# Apply filters based on selections
+if selected_varieties:
+    filtered_df = filtered_df[filtered_df['Prime name'].isin(selected_varieties)]
+if selected_kmeans_group != 'All':
+    filtered_df = filtered_df[filtered_df['Kmeans cluster'] == selected_kmeans_group]
+if selected_ward_group != 'All':
+    filtered_df = filtered_df[filtered_df['Ward cluster'] == selected_ward_group]
 
-# Handle empty filter result
+#  check if it's empty
 if filtered_df.empty:
     st.warning("⚠️ No data matches the selected filters.")
     st.stop()
