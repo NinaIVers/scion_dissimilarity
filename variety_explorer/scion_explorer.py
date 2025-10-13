@@ -1,152 +1,136 @@
-# -*- coding: utf-8 -*-
-"""scion_explorer.ipynb
-"""
-
-# Commented out IPython magic to ensure Python compatibility.
-#pip install streamlit
-#pip install plotly
-
-import altair as alt
 import streamlit as st
 import pandas as pd
+import altair as alt
 import plotly.express as px
 import matplotlib.pyplot as plt
 
-# Load dataset
-df = pd.read_csv('variety_explorer/df_scion_normalized.csv',
-                 encoding= "ISO-8859-1", delimiter=";")
+# Performance: cache data loading
+@st.cache_data
+def load_data():
+    return pd.read_csv('variety_explorer/df_scion_normalized.csv', encoding="ISO-8859-1", delimiter=";")
 
-# Page configuration
-st.set_page_config(layout = "wide")
+df = load_data()
 
-st.title("Grapevine Scion Variety Explorer 🍇🔍")
+# Page config
+st.set_page_config(page_title="Grapevine Scion Explorer", layout="wide")
+
+# Title and intro
+st.title("🍇 Grapevine Scion Variety Explorer")
 st.markdown("""
-        [![Source Code](https://img.shields.io/badge/source_code-mediumpurple?style=for-the-badge&logo=GitHub&logoColor=black&labelColor=lightsteelblue)](https://github.com/NinaIVers/scion_dissimilarity.git)
-        """)
+[![Source Code](https://img.shields.io/badge/source_code-mediumpurple?style=for-the-badge&logo=GitHub&logoColor=black&labelColor=lightsteelblue)](https://github.com/NinaIVers/scion_dissimilarity.git)
 
-st.markdown(""" This interactive tool allows you to explore genetic dissimilarity among 64 grapevine scion varieties.
-Use the filters on the sidebar to select specific cultivars or clustering groups.""")
+Explore genetic dissimilarity among 64 grapevine scion varieties using interactive visualizations and clustering filters.
+""")
 
 # Sidebar filters
 st.sidebar.header("🔎 Filter Options")
-selected_varieties = st.sidebar.multiselect("Select Scion Varieties:",
-                                            df['Prime name'].unique())
-selected_kmeans_group = st.sidebar.selectbox("Select K-means heterotic group:",
-                                             ['All'] + sorted(df['Kmeans cluster'].unique()))
-selected_ward_group = st.sidebar.selectbox("Select Ward heterotic group:",
-                                           ['All'] + sorted(df['Ward cluster'].unique()))
+selected_varieties = st.sidebar.multiselect("Select Scion Varieties:", df['Prime name'].unique())
+selected_kmeans_group = st.sidebar.selectbox("Select K-means Cluster:", ['All'] + sorted(df['Kmeans cluster'].unique()))
+selected_ward_group = st.sidebar.selectbox("Select Ward Cluster:", ['All'] + sorted(df['Ward cluster'].unique()))
 
-# Filters
+# Apply filters
 filtered_df = df.copy()
-
 if selected_varieties:
     filtered_df = filtered_df[filtered_df['Prime name'].isin(selected_varieties)]
-
 if selected_kmeans_group != 'All':
     filtered_df = filtered_df[filtered_df['Kmeans cluster'] == selected_kmeans_group]
-
 if selected_ward_group != 'All':
     filtered_df = filtered_df[filtered_df['Ward cluster'] == selected_ward_group]
 
-# Allowed features
+# Handle empty filter result
+if filtered_df.empty:
+    st.warning("⚠️ No data matches the selected filters.")
+    st.stop()
+
+# Numeric columns
 excluded_columns = ['Ward cluster', 'Kmeans cluster']
-numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns
-                   if col not in excluded_columns]
+numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns if col not in excluded_columns]
 
-# Display filtered data
-st.subheader("Filtered Scion Variety Data")
-stats = filtered_df.describe(include=['int64','float64']).round(5)
-st.dataframe(stats)
+# Tabs for layout
+tab1, tab2, tab3 = st.tabs(["📋 Summary", "📈 Interactive Charts", "📊 Distributions"])
 
+# Tab 1: Summary
+with tab1:
+    st.subheader("Filtered Scion Variety Statistics")
+    st.dataframe(filtered_df.describe(include=['int64', 'float64']).round(5))
 
-# Plots
-def create_point_chart(data, x, y):
-    chart = alt.Chart(data).mark_circle(size=100).encode(
-        x=alt.X(x, title=x),
-        y=alt.Y(y, title=y),
-        color=alt.Color('Ward cluster:N', title='Ward Cluster'),
-        tooltip=['Prime name', 'Kmeans cluster', 'Ward cluster']
-    ).properties(
-        width=800,
-        height=500
-    ).interactive()
-    return chart
+    st.download_button("📥 Download Filtered Data", 
+                       data=filtered_df.to_csv(index=False).encode('utf-8'),
+                       file_name='scion_filtered.csv',
+                       mime='text/csv')
 
-st.altair_chart(create_point_chart(filtered_df, x="Kmeans cluster", y="Prime name"))
+# Tab 2: Interactive Charts
+with tab2:
+    st.subheader("Scatter Plot by Cluster")
+    scatter = alt.Chart(filtered_df).mark_circle(size=100).encode(
+        x=alt.X("Kmeans cluster:N", title="K-means Cluster"),
+        y=alt.Y("Prime name:N", title="Scion Variety"),
+        color=alt.Color("Ward cluster:N", title="Ward Cluster"),
+        tooltip=["Prime name", "Kmeans cluster", "Ward cluster"]
+    ).properties(width=800, height=500).interactive()
+    st.altair_chart(scatter)
 
+    selected_y = st.selectbox("Select feature for boxplot:", numeric_columns)
+    fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
+                     color='Kmeans cluster', points='all',
+                     title=f'Distribution of {selected_y} by K-means Cluster')
+    st.plotly_chart(fig_box)
 
-#Boxplot
-selected_y = st.selectbox("Select feature:", numeric_columns)
+    st.subheader("🔥 Correlation Heatmap")
+    corr = filtered_df[numeric_columns].corr()
+    fig_heat = px.imshow(corr, text_auto=True, color_continuous_scale='Viridis',
+                         title="Correlation Between Numerical Features")
+    st.plotly_chart(fig_heat, use_container_width=True)
 
-fig_box = px.box(filtered_df, x='Kmeans cluster', y=selected_y,
-                 color='Kmeans cluster', points='all',
-                 title=f'Distribution of {selected_y} by K-means Cluster')
-st.plotly_chart(fig_box)
+    st.subheader("🌐 Parallel Coordinates")
+    fig_parallel = px.parallel_coordinates(filtered_df,
+        dimensions=['End of maturation', 'Species', 'Parent 1', 'Parent 2'],
+        color='Kmeans cluster',
+        title='Multivariate Comparison of Cultivars')
+    st.plotly_chart(fig_parallel)
 
+# Tab 3: Distributions
+with tab3:
+    col1, col2 = st.columns(2)
 
-#Parallel cordinate plot
-fig = px.parallel_coordinates(filtered_df,
-    dimensions=['End of maturation', 'Species', 'Parent 1', 'Parent 2'],
-    color='Kmeans cluster',
-    title='Multivariate Comparison of Cultivars')
-st.plotly_chart(fig)
+    with col1:
+        selected_hist = st.selectbox("Select feature for histogram:", numeric_columns, key="hist_var")
+        st.markdown(f"#### 📊 Histogram of {selected_hist}")
+        fig, ax = plt.subplots(figsize=(5, 3))
+        filtered_df[selected_hist].plot(kind='hist',
+                                        orientation='horizontal',
+                                        color='mediumpurple',
+                                        edgecolor='black',
+                                        density=True,
+                                        histtype='bar',
+                                        stacked=True,
+                                        ax=ax)
+        ax.set_xlabel('Frequency')
+        ax.set_ylabel('Value')
+        plt.grid(True)
+        st.pyplot(fig, use_container_width=True)
 
-# Heatmap
-
-
-# Layout: two columns for main plots
-col1, col2 = st.columns(2)
-
-# 1. Histogram (Matplotlib)
-with col1:
-    selected_hist = st.selectbox("Select feature:", numeric_columns, key="hist_var")
-    st.markdown(f"#### 📊 Histogram of {selected_hist}")
-
-    fig, ax = plt.subplots(figsize=(5, 3))
-    filtered_df[selected_hist].plot(kind='hist',
-                                   orientation='horizontal',
-                                   color='mediumpurple',
-                                   edgecolor='black',
-                                   density=True,
-                                   histtype='bar',
-                                   stacked=True,
-                                   ax=ax)
-    ax.set_xlabel('Frequency', fontsize=10)
-    ax.set_ylabel('Value', fontsize=10)
-    plt.grid(True)
-    st.pyplot(fig, use_container_width=True)
-
-
-with col2:
-    selected_box_var = st.selectbox("Select feature:", numeric_columns, key="matplotlib_box_var")
-    st.markdown(f"#### 📊Boxplot of {selected_box_var}")
-    box_property = dict(color='black')
-    flier_property = dict(marker='o', markerfacecolor='orchid',
-                          markersize=7, markeredgecolor='darkorchid')
-    median_property = dict(linestyle='-', linewidth=3.5, color='orange')
-    mean_point_property = dict(marker='D', markerfacecolor='darkorchid',
-                               markersize=5.8)
-
-    fig2, ax2 = plt.subplots(figsize=(5, 3))
-    filtered_df[[selected_box_var]].boxplot(
-        fontsize=10,
-        notch=True,
-        capprops=dict(linewidth=0.5),
-        meanprops=mean_point_property,
-        grid=True,
-        medianprops=median_property,
-        flierprops=flier_property,
-        boxprops=box_property,
-        ax=ax2
-    )
-    plt.xticks(fontsize=10)
-    plt.yticks(rotation=45, fontsize=10)
-    st.pyplot(fig2, use_container_width=True)
-
-
+    with col2:
+        selected_box_var = st.selectbox("Select feature for boxplot:", numeric_columns, key="matplotlib_box_var")
+        st.markdown(f"#### 📊 Boxplot of {selected_box_var}")
+        fig2, ax2 = plt.subplots(figsize=(5, 3))
+        filtered_df[[selected_box_var]].boxplot(
+            fontsize=10,
+            notch=True,
+            capprops=dict(linewidth=0.5),
+            meanprops=dict(marker='D', markerfacecolor='darkorchid', markersize=5.8),
+            grid=True,
+            medianprops=dict(linestyle='-', linewidth=3.5, color='orange'),
+            flierprops=dict(marker='o', markerfacecolor='orchid', markersize=7, markeredgecolor='darkorchid'),
+            boxprops=dict(color='black'),
+            ax=ax2
+        )
+        plt.xticks(fontsize=10)
+        plt.yticks(rotation=45, fontsize=10)
+        st.pyplot(fig2, use_container_width=True)
 
 # Footer
 st.markdown("""
 ---
-**Note:** This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning. 
+🔬 This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning.
 """)
