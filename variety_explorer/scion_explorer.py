@@ -85,13 +85,13 @@ with tab1:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Filtered Scion Variety Statistics")
+        st.subheader("Scion Variety Statistics")
         st.dataframe(filtered_df.describe(include=['int64', 'float64']).round(5))
         
     with col2:
         st.subheader("📈 Scatter Plot")
         selected_var = st.selectbox("Select a feature to visualize:", numeric_columns)
-        fig, ax = plt.subplots(figsize=(10, 5))
+        fig, ax = plt.subplots(figsize=(7, 5))
         ax.scatter(filtered_df.index, filtered_df[selected_var], alpha=0.5)
         ax.set_title(f'{selected_var} Scatter Plot', fontsize=16)
         ax.set_xlabel('Index', fontsize=12)
