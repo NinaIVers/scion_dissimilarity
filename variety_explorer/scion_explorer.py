@@ -85,13 +85,6 @@ with tab1:
     st.subheader("Filtered Scion Variety Statistics")
     st.dataframe(filtered_df.describe(include=['int64', 'float64']).round(5))
 
-    import streamlit as st
-import matplotlib.pyplot as plt
-import pandas as pd
-
-# Filter numeric columns from the filtered dataset
-numeric_columns = filtered_df.select_dtypes(include='number').columns.tolist()
-
 # Interactive interface
 st.subheader("📈 Scatter Plot by Variable")
 
