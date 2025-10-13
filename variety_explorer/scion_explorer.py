@@ -22,27 +22,47 @@ st.markdown("""
 Explore genetic dissimilarity among 64 grapevine scion varieties using interactive visualizations and clustering filters.
 """)
 
-
 # Sidebar filters
 st.sidebar.header("🔎 Filter Options")
 
-# Clear filters logic
-if "clear_filters" not in st.session_state:
-    st.session_state.clear_filters = False
+# Initialize session state for filters
+if "selected_varieties" not in st.session_state:
+    st.session_state.selected_varieties = []
+if "selected_kmeans_group" not in st.session_state:
+    st.session_state.selected_kmeans_group = 'All'
+if "selected_ward_group" not in st.session_state:
+    st.session_state.selected_ward_group = 'All'
 
+# Clear filters button
 if st.sidebar.button("🧹 Clear Filters"):
-    st.session_state.clear_filters = True
+    st.session_state.selected_varieties = []
+    st.session_state.selected_kmeans_group = 'All'
+    st.session_state.selected_ward_group = 'All'
 
-# Define filters
-if st.session_state.clear_filters:
-    selected_varieties = []
-    selected_kmeans_group = 'All'
-    selected_ward_group = 'All'
-    st.session_state.clear_filters = True
-else:
-    selected_varieties = st.sidebar.multiselect("Select Scion Varieties:", df['Prime name'].unique())
-    selected_kmeans_group = st.sidebar.selectbox("Select K-means Cluster:", ['All'] + sorted(df['Kmeans cluster'].unique()))
-    selected_ward_group = st.sidebar.selectbox("Select Ward Cluster:", ['All'] + sorted(df['Ward cluster'].unique()))
+# Always render widgets with current session state values
+selected_varieties = st.sidebar.multiselect(
+    "Select Scion Varieties:",
+    options=df['Prime name'].unique(),
+    default=st.session_state.selected_varieties
+)
+
+selected_kmeans_group = st.sidebar.selectbox(
+    "Select K-means Cluster:",
+    options=['All'] + sorted(df['Kmeans cluster'].unique()),
+    index=(['All'] + sorted(df['Kmeans cluster'].unique())).index(st.session_state.selected_kmeans_group)
+)
+
+selected_ward_group = st.sidebar.selectbox(
+    "Select Ward Cluster:",
+    options=['All'] + sorted(df['Ward cluster'].unique()),
+    index=(['All'] + sorted(df['Ward cluster'].unique())).index(st.session_state.selected_ward_group)
+)
+
+# Update session state with current selections
+st.session_state.selected_varieties = selected_varieties
+st.session_state.selected_kmeans_group = selected_kmeans_group
+st.session_state.selected_ward_group = selected_ward_group
+
 
 # Apply filters
 filtered_df = df.copy()
