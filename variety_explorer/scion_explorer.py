@@ -133,7 +133,7 @@ with tab4:
     mask = np.triu(np.ones_like(corr, dtype=bool))
 
     fig, ax = plt.subplots(figsize=(20,27))
-    sns.heatmap(corr, vmin=-1, vmax=1, linewidths=.5,
+    sns.heatmap(corr, vmin=-1, vmax=1, linewidths=.5, annot = True,
                 mask=mask, fmt='.1f', cmap='PRGn_r',
                 cbar_kws={"orientation": "horizontal",
                           "shrink": 0.7, "location": "bottom",
