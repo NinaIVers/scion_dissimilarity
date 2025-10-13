@@ -148,8 +148,7 @@ with tab4:
         coloraxis_colorbar=dict(
             title="Pearson Coefficient",
             orientation="h",        
-            x=0.5,                   
-            xanchor="bottom",
+            x=0.5,
             thickness=20,
             len=0.8
         ),
