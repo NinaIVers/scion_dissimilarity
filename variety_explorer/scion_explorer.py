@@ -91,11 +91,13 @@ with tab2:
 
 # Tab 3: Distributions
 with tab3:
+    
+    selected_feature = st.selectbox("Select feature:", numeric_columns, key="hist_var")
     col1, col2 = st.columns(2)
 
     with col1:
-        selected_hist = st.selectbox("Select feature for histogram:", numeric_columns, key="hist_var")
-        st.markdown(f"#### 📊 Histogram of {selected_hist}")
+        
+        st.markdown(f"#### 📊 Histogram of {selected_feature}")
         fig, ax = plt.subplots(figsize=(5, 3))
         filtered_df[selected_hist].plot(kind='hist',
                                         orientation='horizontal',
@@ -111,8 +113,7 @@ with tab3:
         st.pyplot(fig, use_container_width=True)
 
     with col2:
-        selected_box_var = st.selectbox("Select feature for boxplot:", numeric_columns, key="matplotlib_box_var")
-        st.markdown(f"#### 📊 Boxplot of {selected_box_var}")
+        st.markdown(f"#### 📊 Boxplot of {selected_feature}")
         fig2, ax2 = plt.subplots(figsize=(5, 3))
         filtered_df[[selected_box_var]].boxplot(
             fontsize=10,
@@ -132,5 +133,5 @@ with tab3:
 # Footer
 st.markdown("""
 ---
-🔬 This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning.
+**Note:** 🔬 This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning.
 """)
