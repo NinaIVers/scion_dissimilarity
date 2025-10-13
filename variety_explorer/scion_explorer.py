@@ -101,6 +101,53 @@ with tab2:
 
 # Tab 3: Distributions
 with tab3:
+    st.markdown("#### 🧬 SSR Markers")
+    allele1_markers = {
+                        'VVS2 Allele 1': 'salmon',
+                        'VVMD5 Allele 1': 'mediumpurple',
+                        'VRZAG79 Allele 1': 'palevioletred',
+                        'VVMD28 Allele 1': 'cornflowerblue',
+                        'VVMD32 Allele 1': 'magenta',
+                        'VVMD7 Allele 1': 'mediumblue',
+                        'VVMD25 Allele 1': 'dimgrey',
+                        'VRZAG62 Allele 1': 'firebrick',
+                        'VVMD27 Allele 1': 'lightpink'
+                    }
+
+allele2_markers = {
+                    'VVS2 Allele 2': 'tomato',
+                    'VVMD5 Allele 2': 'rebeccapurple',
+                    'VRZAG79 Allele 2': 'mediumvioletred',
+                    'VVMD28 Allele 2': 'royalblue',
+                    'VVMD32 Allele 2': 'darkmagenta',
+                    'VVMD7 Allele 2': 'midnightblue',
+                    'VVMD25 Allele 2': 'black',
+                    'VRZAG62 Allele 2': 'maroon',
+                    'VVMD27 Allele 2': 'hotpink'
+                }
+
+fig, ax = plt.subplots(figsize=(18, 7))
+
+for marker in selected_markers:
+    if marker in df_copa.columns:
+        df_copa[marker].plot(
+            kind='hist',
+            bins=30,
+            alpha=0.75,
+            lw=1,
+            width=1.6,
+            ec='white',
+            label=marker,
+            color=marker_colors[marker],
+            ax=ax
+        )
+
+plt.grid(True)
+plt.ylabel('Frequency', fontsize=14)
+plt.xlabel('Allele Size', fontsize=14)
+plt.legend(loc='upper left', ncols=2, fontsize=12, fancybox=True, framealpha=0.3)
+st.pyplot(fig)
+
     
     selected_feature = st.selectbox("Select feature:", numeric_columns, key="hist_var")
     col1, col2 = st.columns(2)
@@ -139,6 +186,8 @@ with tab3:
         plt.xticks(fontsize=10)
         plt.yticks(rotation=45, fontsize=10)
         st.pyplot(fig2, use_container_width=True)
+
+
 
 # Tab 3: Correlation
 with tab4:
