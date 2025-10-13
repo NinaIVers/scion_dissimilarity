@@ -47,7 +47,7 @@ excluded_columns = ['Ward cluster', 'Kmeans cluster']
 numeric_columns = [col for col in filtered_df.select_dtypes(include='number').columns if col not in excluded_columns]
 
 # Tabs for layout
-tab1, tab2, tab3 = st.tabs(["📋 Summary", "📈 Interactive Charts", "📊 Distributions"])
+tab1, tab2, tab3, tab4 = st.tabs(["📋 Summary", "📈 Interactive Charts", "📊 Distributions", "🧬 Pearson Correlation"])
 
 # Tab 1: Summary
 with tab1:
@@ -75,12 +75,6 @@ with tab2:
                      color='Kmeans cluster', points='all',
                      title=f'Distribution of {selected_y} by K-means Cluster')
     st.plotly_chart(fig_box)
-
-    st.subheader("🔥 Correlation Heatmap")
-    corr = filtered_df[numeric_columns].corr()
-    fig_heat = px.imshow(corr, text_auto=True, color_continuous_scale='Viridis',
-                         title="Correlation Between Numerical Features")
-    st.plotly_chart(fig_heat, use_container_width=True)
 
     st.subheader("🌐 Parallel Coordinates")
     fig_parallel = px.parallel_coordinates(filtered_df,
@@ -130,8 +124,25 @@ with tab3:
         plt.yticks(rotation=45, fontsize=10)
         st.pyplot(fig2, use_container_width=True)
 
+# Tab 3: Correlation
+with tab4:
+    st.subheader("📈 Pearson Correlation Heatmap")
+    corr = filtered_df[numeric_columns].corr(method='pearson')
+    mask = np.triu(np.ones_like(corr, dtype=bool))
+    
+    fig_heat = px.imshow(corr, 
+                         text_auto=True, 
+                         color_continuous_scale='PRGn_r',
+                         mask=mask, 
+                         fmt ='.1f')
+    st.plotly_chart(fig_heat, use_container_width=True)
+
+
+#plt.title("ANÁLISE DE CORRELAÇÃO \n", fontsize = 30, fontweight='bold')
+plt.title("HEATMAP CORRELATION ANALYSIS \n", fontsize = 20, fontweight='bold')
+
 # Footer
 st.markdown("""
 ---
-**Note:** 🔬 This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning.
+**Note:** This tool is part of a research project on genetic dissimilarity of grapevine scion varieties using unsupervised machine learning. 🔬🍇
 """)
