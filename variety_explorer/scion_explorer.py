@@ -131,19 +131,19 @@ with tab4:
     st.subheader("📈 Pearson Correlation Heatmap")
     corr = filtered_df[numeric_columns].corr(method='pearson')
     mask = np.triu(np.ones_like(corr, dtype=bool))
-    
-    fig_heat = sns.heatmap(corr, vmin=-1, vmax=1, linewidths=.5,
-                               mask=mask, fmt ='.1f', cmap='PRGn_r',
-                               cbar_kws={"orientation": "horizontal",
-                                    "shrink": 0.7, "location" : "bottom",
-                                    "aspect" : 30, 'label': 'Pearson coeficient',
-                                         "spacing" : "proportional"})
-    
-    st.plotly_chart(fig_heat, use_container_width=True)
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.heatmap(corr, vmin=-1, vmax=1, linewidths=.5,
+                mask=mask, fmt='.1f', cmap='PRGn_r',
+                cbar_kws={"orientation": "horizontal",
+                          "shrink": 0.7, "location": "bottom",
+                          "aspect": 30, 'label': 'Pearson coefficient',
+                          "spacing": "proportional"},
+                ax=ax)
+
+    st.pyplot(fig, use_container_width=True)
 
 
-#plt.title("ANÁLISE DE CORRELAÇÃO \n", fontsize = 30, fontweight='bold')
-plt.title("HEATMAP CORRELATION ANALYSIS \n", fontsize = 20, fontweight='bold')
 
 # Footer
 st.markdown("""
