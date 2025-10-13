@@ -99,28 +99,6 @@ with tab2:
                      color='Ward cluster', points='all')
     st.plotly_chart(fig_box)
 
-
-    st.subheader("🌐 Parallel Coordinates")
-    fig_parallel = px.parallel_coordinates(filtered_df,
-                                           dimensions=['End of maturation', 'Species', 'Parent 1', 'Parent 2'],
-                                           color='Kmeans cluster')
-    st.plotly_chart(fig_parallel, use_container_width=True)
-
-
-  st.subheader("🌞 Hierarquia Genética das Cultivares")
-
-  sunburst_df = filtered_df[['Species', 'Parent 1', 'Parent 2']].dropna()
-    
-    fig_sunburst = px.sunburst(
-                                sunburst_df,
-                                path=['Species', 'Parent 1', 'Parent 2'],
-                                title='Hierarquia Genética das Cultivares'
-                            )
-                            
-    st.plotly_chart(fig_sunburst, use_container_width=True)
-
-
-
 # Tab 3: Distributions
 with tab3:
     
