@@ -133,26 +133,24 @@ with tab4:
     # Compute correlation matrix
     corr = filtered_df[numeric_columns].corr(method='pearson').round(2)
 
-    # Create Plotly heatmap
-    fig_heat = px.imshow(
-        corr,
-        text_auto=True,
-        color_continuous_scale='BrBG',  # Closest to Seaborn's 'PRGn_r'
-        zmin=-1, zmax=1,
-        aspect="auto",
-        title="📈 Pearson Correlation Between Features"
-    )
 
-    # Customize layout to match Seaborn style
+    fig_heat = px.imshow(
+                        corr,
+                        text_auto=True,
+                        color_continuous_scale='PRGn_r',
+                        zmin=-1, zmax=1,
+                        aspect="auto"
+                        )
+
     fig_heat.update_layout(
         width=1000,
         height=800,
         margin=dict(l=50, r=50, t=80, b=50),
         coloraxis_colorbar=dict(
             title="Pearson Coefficient",
-            orientation="h",         # Horizontal
-            x=0.5,                   # Centered
-            xanchor="center",
+            orientation="h",        
+            x=0.5,                   
+            xanchor="bottom",
             thickness=20,
             len=0.8
         ),
