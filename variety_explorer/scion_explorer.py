@@ -91,7 +91,7 @@ with tab1:
     with col2:
         st.subheader("📈 Scatter Plot")
         selected_var = st.selectbox("Select a feature to visualize:", numeric_columns)
-        fig, ax = plt.subplots(figsize=(5, 4))
+        fig, ax = plt.subplots(figsize=(8, 7))
         ax.scatter(filtered_df.index, filtered_df[selected_var], alpha=0.5)
         ax.set_title(f'{selected_var} Scatter Plot', fontsize=16)
         ax.set_xlabel('Index', fontsize=12)
