@@ -38,7 +38,7 @@ if st.session_state.clear_filters:
     selected_varieties = []
     selected_kmeans_group = 'All'
     selected_ward_group = 'All'
-    st.session_state.clear_filters = False
+    st.session_state.clear_filters = True
 else:
     selected_varieties = st.sidebar.multiselect("Select Scion Varieties:", df['Prime name'].unique())
     selected_kmeans_group = st.sidebar.selectbox("Select K-means Cluster:", ['All'] + sorted(df['Kmeans cluster'].unique()))
