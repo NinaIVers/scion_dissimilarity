@@ -99,7 +99,7 @@ with tab3:
         
         st.markdown(f"#### 📊 Histogram of {selected_feature}")
         fig, ax = plt.subplots(figsize=(5, 3))
-        filtered_df[selected_hist].plot(kind='hist',
+        filtered_df[selected_feature].plot(kind='hist',
                                         orientation='horizontal',
                                         color='mediumpurple',
                                         edgecolor='black',
@@ -115,17 +115,17 @@ with tab3:
     with col2:
         st.markdown(f"#### 📊 Boxplot of {selected_feature}")
         fig2, ax2 = plt.subplots(figsize=(5, 3))
-        filtered_df[[selected_box_var]].boxplot(
-            fontsize=10,
-            notch=True,
-            capprops=dict(linewidth=0.5),
-            meanprops=dict(marker='D', markerfacecolor='darkorchid', markersize=5.8),
-            grid=True,
-            medianprops=dict(linestyle='-', linewidth=3.5, color='orange'),
-            flierprops=dict(marker='o', markerfacecolor='orchid', markersize=7, markeredgecolor='darkorchid'),
-            boxprops=dict(color='black'),
-            ax=ax2
-        )
+        filtered_df[[selected_feature]].boxplot(
+                                                fontsize=10,
+                                                notch=True,
+                                                capprops=dict(linewidth=0.5),
+                                                meanprops=dict(marker='D', markerfacecolor='darkorchid', markersize=5.8),
+                                                grid=True,
+                                                medianprops=dict(linestyle='-', linewidth=3.5, color='orange'),
+                                                flierprops=dict(marker='o', markerfacecolor='orchid', markersize=7, markeredgecolor='darkorchid'),
+                                                boxprops=dict(color='black'),
+                                                ax=ax2
+                                            )
         plt.xticks(fontsize=10)
         plt.yticks(rotation=45, fontsize=10)
         st.pyplot(fig2, use_container_width=True)
